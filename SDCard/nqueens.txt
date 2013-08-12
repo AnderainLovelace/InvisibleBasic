@@ -1,0 +1,29 @@
+# N-Queens Benckmark - by Anderain
+sub main
+  dim l(9)
+  r=8
+  s=0
+  x=0
+  repeat
+    x=x+1
+    l(x)=r
+    repeat
+      s=s+1
+      y=x
+      while y>1
+        y=y-1
+        t=l(x)-l(y)
+        if t=0 or x-y=abs(t)
+          y=0
+          l(x)=l(x)-1
+          while l(x)=0
+            x=x-1
+            l(x)=l(x)-1
+          end
+        end
+      end
+      print y," ",s,"\10"
+    until y=1
+  until x=r
+  print s,"\10"
+end

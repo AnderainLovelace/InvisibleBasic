@@ -1,0 +1,11 @@
+[DLSimRunSpace]
+
+[Breakpoint]
+File=E:\Anderain\fx-9860\InvisibleBasic\main.c
+Line=15
+Flags=00001012
+
+[Breakpoint]
+File=E:\Anderain\fx-9860\InvisibleBasic\intpr.c
+Line=1429
+Flags=00001012

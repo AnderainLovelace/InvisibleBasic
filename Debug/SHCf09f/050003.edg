@@ -1,0 +1,18 @@
+17
+E:\Anderain\fx-9860\InvisibleBasic\Debug\SHCf09f\060017.cmn
+C:\Program Files\CASIO\fx-9860G SDK\OS\SH\bin\shc.exe
+-m
+-E
+-o
+E:\Anderain\fx-9860\InvisibleBasic\Debug\SHCf09f\060013.ic
+-D_SH3
+-D_BIG
+-D__HITACHI_VERSION__=0x0600
+-D__HITACHI__
+-IC:\Program Files\CASIO\fx-9860G SDK\OS\FX\include\
+-IE:\Anderain\fx-9860\InvisibleBasic\
+-IC:\Program Files\CASIO\fx-9860G SDK\OS\SH\include\
+-IC:\Program Files\CASIO\fx-9860G SDK\OS\SH\bin\
+-L
+E:\Anderain\fx-9860\InvisibleBasic\Debug\SHCf09f\060015.els
+E:\Anderain\fx-9860\InvisibleBasic\utils.c

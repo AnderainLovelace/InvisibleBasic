@@ -1,0 +1,20 @@
+sub sqrt
+  x0 = 2
+  x1 = 1
+  while abs(x0-x1)>0.000000001
+    x0 = x1
+    x1 = (x0+a/x0)/2
+  end
+  r = x0
+end
+
+sub main
+  print "?"
+  input a
+  if a<0
+    print "error"
+    exit
+  end
+  gosub sqrt
+  print "squire  root  of  ",a,"  is  ",r,"\10"
+end

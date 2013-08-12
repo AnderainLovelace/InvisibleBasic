@@ -1,0 +1,1 @@
+char *d_ftoa(double number,char *buf);

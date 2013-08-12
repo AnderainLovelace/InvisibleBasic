@@ -1,0 +1,467 @@
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 21-Jul-2013 15:59:48  PAGE    1
+
+************ OBJECT LISTING ************
+
+FILE NAME: E:\Anderain\fx-9860\InvisibleBasic\error.c
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+         error.c     1    #include <stdarg.h>
+         error.c     2    #include <setjmp.h>
+         error.c     3    #include "dConsole.h"
+         error.c     4    #include "intpr.h"
+         error.c     5    
+         error.c     6    jmp_buf exit_buf;
+         error.c     7    
+         error.c     8    void d_exit ()
+P   00000000              _d_exit:                         ; function: d_exit
+                                                           ; frame size=0
+         error.c     9    {
+         error.c    10            longjmp(exit_buf,1);
+    00000000 D440                   MOV.L       L290+8,R4  ; _exit_buf
+    00000002 D341                   MOV.L       L290+12,R3 ; _longjmp
+    00000004 432B                   JMP         @R3
+    00000006 E501                   MOV         #1,R5
+         error.c    11    }
+         error.c    12    
+         error.c    13    void merror_show_line ()
+    00000008              _merror_show_line:               ; function: merror_show_line
+                                                           ; frame size=20
+    00000008 2FE6                   MOV.L       R14,@-R15
+    0000000A 2FD6                   MOV.L       R13,@-R15
+    0000000C 2FC6                   MOV.L       R12,@-R15
+    0000000E 2FB6                   MOV.L       R11,@-R15
+    00000010 4F22                   STS.L       PR,@-R15
+         error.c    14    {
+         error.c    15            int i,s;
+         error.c    16            extern const char * pline;
+         error.c    17            extern void l_put_back();
+         error.c    18            puts(line);
+    00000012 D43E                   MOV.L       L290+16,R4 ; _line
+    00000014 D33E                   MOV.L       L290+20,R3 ; _dConsolePuts
+    00000016 430B                   JSR         @R3
+    00000018 0009                   NOP
+         error.c    19            l_put_back();
+    0000001A D23E                   MOV.L       L290+24,R2 ; _l_put_back
+    0000001C 420B                   JSR         @R2
+    0000001E 0009                   NOP
+         error.c    20            s = pline - line;
+    00000020 D33A                   MOV.L       L290+16,R3 ; _line
+    00000022 D23D                   MOV.L       L290+28,R2 ; _pline
+         error.c    21            for(i=0;i<s;++i) put(" ");
+    00000024 DB3D                   MOV.L       L290+32,R11; L257
+    00000026 6D22                   MOV.L       @R2,R13
+    00000028 DC3D                   MOV.L       L290+36,R12; _dConsolePut
+    0000002A 3D38                   SUB         R3,R13
+    0000002C 4D15                   CMP/PL      R13
+    0000002E 8F05                   BF/S        L284
+    00000030 EE00                   MOV         #0,R14
+    00000032              L285:                             
+    00000032 4C0B                   JSR         @R12
+    00000034 64B3                   MOV         R11,R4
+    00000036 7E01                   ADD         #1,R14
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 21-Jul-2013 15:59:48  PAGE    2
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000038 3ED3                   CMP/GE      R13,R14
+    0000003A 8BFA                   BF          L285
+    0000003C              L284:                             
+         error.c    22            puts("^");
+    0000003C D439                   MOV.L       L290+40,R4 ; L258
+    0000003E 4F26                   LDS.L       @R15+,PR
+    00000040 D233                   MOV.L       L290+20,R2 ; _dConsolePuts
+    00000042 6BF6                   MOV.L       @R15+,R11
+    00000044 6CF6                   MOV.L       @R15+,R12
+    00000046 6DF6                   MOV.L       @R15+,R13
+    00000048 422B                   JMP         @R2
+    0000004A 6EF6                   MOV.L       @R15+,R14
+         error.c    23    }
+         error.c    24    
+         error.c    25    
+         error.c    26    void merror_msg_only(const char * format,...)
+    0000004C              _merror_msg_only:                ; function: merror_msg_only
+                                                           ; frame size=516
+    0000004C 4F22                   STS.L       PR,@-R15
+         error.c    27    {
+         error.c    28            char            buf[512];
+         error.c    29            va_list         arg_list;
+         error.c    30    
+         error.c    31            va_start        (arg_list,format);
+    0000004E E603                   MOV         #3,R6
+    00000050 9054                   MOV.W       L290,R0    ; H'FE00
+    00000052 3F0C                   ADD         R0,R15
+    00000054 9053                   MOV.W       L290+2,R0  ; H'0204
+    00000056 30FC                   ADD         R15,R0
+    00000058 7004                   ADD         #4,R0
+    0000005A 2608                   TST         R0,R6
+    0000005C 8903                   BT          L286
+    0000005E 964E                   MOV.W       L290+2,R6  ; H'0204
+    00000060 36FC                   ADD         R15,R6
+    00000062 A003                   BRA         L287
+    00000064 7608                   ADD         #8,R6
+    00000066              L286:                             
+    00000066 964A                   MOV.W       L290+2,R6  ; H'0204
+    00000068 36FC                   ADD         R15,R6
+    0000006A 7604                   ADD         #4,R6
+    0000006C              L287:                             
+         error.c    32            vsprintf        ((char*)buf,(char*)format,arg_list);
+    0000006C 9047                   MOV.W       L290+2,R0  ; H'0204
+    0000006E 05FE                   MOV.L       @(R0,R15),R5
+    00000070 D32D                   MOV.L       L290+44,R3 ; _vsprintf
+    00000072 430B                   JSR         @R3
+    00000074 64F3                   MOV         R15,R4
+         error.c    33            va_end          (arg_list);
+         error.c    34    
+         error.c    35            puts("Error:");
+    00000076 D42D                   MOV.L       L290+48,R4 ; L265
+    00000078 D225                   MOV.L       L290+20,R2 ; _dConsolePuts
+    0000007A 420B                   JSR         @R2
+    0000007C 0009                   NOP
+         error.c    36            puts(buf);
+    0000007E D324                   MOV.L       L290+20,R3 ; _dConsolePuts
+    00000080 430B                   JSR         @R3
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 21-Jul-2013 15:59:48  PAGE    3
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000082 64F3                   MOV         R15,R4
+         error.c    37    
+         error.c    38            d_exit();
+    00000084 BFBC                   BSR         _d_exit
+    00000086 0009                   NOP
+         error.c    39    }
+    00000088 913A                   MOV.W       L290+4,R1  ; H'0200
+    0000008A 3F1C                   ADD         R1,R15
+    0000008C 4F26                   LDS.L       @R15+,PR
+    0000008E 000B                   RTS
+    00000090 0009                   NOP
+         error.c    40    
+         error.c    41    void merror_msg(const char * format,...)
+    00000092              _merror_msg:                     ; function: merror_msg
+                                                           ; frame size=516
+         error.c    42    {
+         error.c    43            char            buf[512];
+         error.c    44            va_list         arg_list;
+         error.c    45    
+         error.c    46            va_start        (arg_list,format);
+    00000092 E603                   MOV         #3,R6
+    00000094 4F22                   STS.L       PR,@-R15
+    00000096 9031                   MOV.W       L290,R0    ; H'FE00
+    00000098 3F0C                   ADD         R0,R15
+    0000009A 9030                   MOV.W       L290+2,R0  ; H'0204
+    0000009C 30FC                   ADD         R15,R0
+    0000009E 7004                   ADD         #4,R0
+    000000A0 2608                   TST         R0,R6
+    000000A2 8903                   BT          L288
+    000000A4 962B                   MOV.W       L290+2,R6  ; H'0204
+    000000A6 36FC                   ADD         R15,R6
+    000000A8 A003                   BRA         L289
+    000000AA 7608                   ADD         #8,R6
+    000000AC              L288:                             
+    000000AC 9627                   MOV.W       L290+2,R6  ; H'0204
+    000000AE 36FC                   ADD         R15,R6
+    000000B0 7604                   ADD         #4,R6
+    000000B2              L289:                             
+         error.c    47            vsprintf        ((char*)buf,(char*)format,arg_list);
+    000000B2 9024                   MOV.W       L290+2,R0  ; H'0204
+    000000B4 D31C                   MOV.L       L290+44,R3 ; _vsprintf
+    000000B6 05FE                   MOV.L       @(R0,R15),R5
+    000000B8 430B                   JSR         @R3
+    000000BA 64F3                   MOV         R15,R4
+         error.c    48            va_end          (arg_list);
+         error.c    49    
+         error.c    50            merror_show_line();
+    000000BC BFA4                   BSR         _merror_show_line
+    000000BE 0009                   NOP
+         error.c    51            puts("Error:");
+    000000C0 D41A                   MOV.L       L290+48,R4 ; L265
+    000000C2 D313                   MOV.L       L290+20,R3 ; _dConsolePuts
+    000000C4 430B                   JSR         @R3
+    000000C6 0009                   NOP
+         error.c    52            puts(buf);
+    000000C8 D211                   MOV.L       L290+20,R2 ; _dConsolePuts
+    000000CA 420B                   JSR         @R2
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 21-Jul-2013 15:59:48  PAGE    4
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000000CC 64F3                   MOV         R15,R4
+         error.c    53    
+         error.c    54            d_exit();
+    000000CE BF97                   BSR         _d_exit
+    000000D0 0009                   NOP
+         error.c    55    }
+    000000D2 9115                   MOV.W       L290+4,R1  ; H'0200
+    000000D4 3F1C                   ADD         R1,R15
+    000000D6 4F26                   LDS.L       @R15+,PR
+    000000D8 000B                   RTS
+    000000DA 0009                   NOP
+         error.c    56    
+         error.c    57    void merror_illegal_token()
+    000000DC              _merror_illegal_token:           ; function: merror_illegal_token
+                                                           ; frame size=12
+    000000DC 4F22                   STS.L       PR,@-R15
+         error.c    58    {
+         error.c    59            extern char token[];
+         error.c    60    
+         error.c    61            merror_show_line();
+    000000DE BF93                   BSR         _merror_show_line
+    000000E0 0009                   NOP
+         error.c    62            puts("Error:");
+    000000E2 D412                   MOV.L       L290+48,R4 ; L265
+    000000E4 D20A                   MOV.L       L290+20,R2 ; _dConsolePuts
+    000000E6 420B                   JSR         @R2
+    000000E8 0009                   NOP
+         error.c    63            printf("Illegal token '%s'\n",token);
+    000000EA D311                   MOV.L       L290+52,R3 ; _token
+    000000EC D211                   MOV.L       L290+56,R2 ; L274
+    000000EE 2F36                   MOV.L       R3,@-R15
+    000000F0 D111                   MOV.L       L290+60,R1 ; _dPrintf
+    000000F2 410B                   JSR         @R1
+    000000F4 2F26                   MOV.L       R2,@-R15
+    000000F6 7F08                   ADD         #8,R15
+         error.c    64            d_exit();
+    000000F8 AF82                   BRA         _d_exit
+    000000FA 4F26                   LDS.L       @R15+,PR
+    000000FC              L290:                             
+    000000FC FE00                   .DATA.W     H'FE00
+    000000FE 0204                   .DATA.W     H'0204
+    00000100 0200                   .DATA.W     H'0200
+    00000102 0000                   .DATA.W     0
+    00000104 <00000000>             .DATA.L     _exit_buf
+    00000108 <00000000>             .DATA.L     _longjmp
+    0000010C <00000000>             .DATA.L     _line
+    00000110 <00000000>             .DATA.L     _dConsolePuts
+    00000114 <00000000>             .DATA.L     _l_put_back
+    00000118 <00000000>             .DATA.L     _pline
+    0000011C <00000000>             .DATA.L     L257
+    00000120 <00000000>             .DATA.L     _dConsolePut
+    00000124 <00000000>             .DATA.L     L258
+    00000128 <00000000>             .DATA.L     _vsprintf
+    0000012C <00000000>             .DATA.L     L265
+    00000130 <00000000>             .DATA.L     _token
+    00000134 <00000000>             .DATA.L     L274
+    00000138 <00000000>             .DATA.L     _dPrintf
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 21-Jul-2013 15:59:48  PAGE    5
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+         error.c    65    }
+         error.c    66    
+         error.c    67    void merror_expect(const char * s)
+    0000013C              _merror_expect:                  ; function: merror_expect
+                                                           ; frame size=20
+    0000013C 4F22                   STS.L       PR,@-R15
+         error.c    68    {
+         error.c    69            extern char token[];
+         error.c    70    
+         error.c    71            merror_show_line();
+    0000013E BF63                   BSR         _merror_show_line
+    00000140 2F46                   MOV.L       R4,@-R15
+         error.c    72            puts("Error:");
+    00000142 D407                   MOV.L       L291,R4    ; L265
+    00000144 D207                   MOV.L       L291+4,R2  ; _dConsolePuts
+    00000146 420B                   JSR         @R2
+    00000148 0009                   NOP
+         error.c    73            printf("illegal '%s','%s' expect here\n",token,s);
+    0000014A 63F2                   MOV.L       @R15,R3
+    0000014C D206                   MOV.L       L291+8,R2  ; _token
+    0000014E 2F36                   MOV.L       R3,@-R15
+    00000150 2F26                   MOV.L       R2,@-R15
+    00000152 D306                   MOV.L       L291+12,R3 ; L278
+    00000154 D106                   MOV.L       L291+16,R1 ; _dPrintf
+    00000156 410B                   JSR         @R1
+    00000158 2F36                   MOV.L       R3,@-R15
+         error.c    74            d_exit();
+    0000015A 7F10                   ADD         #16,R15
+    0000015C AF50                   BRA         _d_exit
+    0000015E 4F26                   LDS.L       @R15+,PR
+    00000160              L291:                             
+    00000160 <00000000>             .DATA.L     L265
+    00000164 <00000000>             .DATA.L     _dConsolePuts
+    00000168 <00000000>             .DATA.L     _token
+    0000016C <00000000>             .DATA.L     L278
+    00000170 <00000000>             .DATA.L     _dPrintf
+         error.c    75    }
+C   00000000              L257:
+    00000000 20                     .SDATA      " "
+    00000001 00                     .DATA.B     H'00
+    00000002 00000002               .RES.W      1
+    00000004              L258:
+    00000004 5E                     .SDATA      "^"
+    00000005 00                     .DATA.B     H'00
+    00000006 00000002               .RES.W      1
+    00000008              L265:
+    00000008 4572726F72             .SDATA      "Error:"
+             3A           
+    0000000E 00                     .DATA.B     H'00
+    0000000F 00000001               .RES.B      1
+    00000010              L274:
+    00000010 496C6C6567             .SDATA      "Illegal token '%s'"
+             616C20746F   
+             6B656E2027   
+             257327       
+    00000022 0A00                   .DATA.B     H'0A,H'00
+    00000024              L278:
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 21-Jul-2013 15:59:48  PAGE    6
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000024 696C6C6567             .SDATA      "illegal '%s','%s' expect here"
+             616C202725   
+             73272C2725   
+             7327206578   
+             7065637420   
+             68657265     
+    00000041 0A00                   .DATA.B     H'0A,H'00
+B   00000000              _exit_buf:                       ; static: exit_buf
+    00000000 00000050               .RES.L      20
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 21-Jul-2013 15:59:48  PAGE    1
+
+
+******** STATISTICS INFORMATION ********
+
+
+********** ERROR INFORMATION ***********
+
+NUMBER OF ERRORS:           0
+NUMBER OF WARNINGS:         0
+
+
+
+
+******* SOURCE LINE INFORMATION ********
+
+COMPILED SOURCE LINE:       75
+
+
+
+******* SECTION SIZE INFORMATION *******
+
+PROGRAM  SECTION (P):                               00000174 Byte(s)
+CONSTANT SECTION (C):                               00000043 Byte(s)
+DATA     SECTION (D):                               00000000 Byte(s)
+BSS      SECTION (B):                               00000050 Byte(s)
+
+ TOTAL PROGRAM SIZE: 00000207 Byte(s)
+
+
+
+********** LABEL INFORMATION ***********
+
+NUMBER OF EXTERNAL REFERENCE SYMBOLS:            9
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:           7
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:            29
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*** COMMAND PARAMETER ***
+
+
+  -subcommand=C:\Users\ADMINI~1\AppData\Local\Temp\hmk5E85.tmp 
+

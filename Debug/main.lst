@@ -1,0 +1,401 @@
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 29-Jul-2013 08:44:07  PAGE    1
+
+************ OBJECT LISTING ************
+
+FILE NAME: E:\Anderain\fx-9860\InvisibleBasic\main.c
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          main.c     1    #include <setjmp.h>
+          main.c     2    #include <fxlib.h>
+          main.c     3    #include "intpr.h"
+          main.c     4    #include "dconsole.h"
+          main.c     5    
+          main.c     6    extern jmp_buf exit_buf;
+          main.c     7    extern void d_exit();
+          main.c     8    
+          main.c     9    extern const char * pline;
+          main.c    10    extern char token[];
+          main.c    11    extern int token_type;
+          main.c    12    
+          main.c    13    #define TIMER_ID 2
+          main.c    14    
+          main.c    15    void timer_exit_break ()
+P   00000000              _timer_exit_break:               ; function: timer_exit_break
+                                                           ; frame size=32
+    00000000 2FE6                   MOV.L       R14,@-R15
+          main.c    16    {
+          main.c    17            static times = 0;short unused = 0;
+          main.c    18            int kcode1 = 0, kcode2 = 0;
+          main.c    19    
+          main.c    20            if (Bkey_GetKeyWait(&kcode1, &kcode2, KEYWAIT_HALTOFF_TIMEROFF,0,0, &unused)==KEYREP_KEYEVENT)
+    00000002 E601                   MOV         #1,R6
+    00000004 D238                   MOV.L       L359+6,R2  ; _Bkey_GetKeyWait
+    00000006 EE00                   MOV         #0,R14
+    00000008 2FD6                   MOV.L       R13,@-R15
+    0000000A 60E3                   MOV         R14,R0
+    0000000C 4F22                   STS.L       PR,@-R15
+    0000000E 67E3                   MOV         R14,R7
+    00000010 7FF4                   ADD         #-12,R15
+    00000012 63F3                   MOV         R15,R3
+    00000014 81F4                   MOV.W       R0,@(8,R15)
+    00000016 7308                   ADD         #8,R3
+    00000018 1FE1                   MOV.L       R14,@(4,R15)
+    0000001A 2FE2                   MOV.L       R14,@R15
+    0000001C 2F36                   MOV.L       R3,@-R15
+    0000001E 2FE6                   MOV.L       R14,@-R15
+    00000020 65F3                   MOV         R15,R5
+    00000022 7508                   ADD         #8,R5
+    00000024 64F3                   MOV         R15,R4
+    00000026 420B                   JSR         @R2
+    00000028 740C                   ADD         #12,R4
+    0000002A 8801                   CMP/EQ      #1,R0
+    0000002C 8F2B                   BF/S        L350
+    0000002E 7F08                   ADD         #8,R15
+          main.c    21            {
+          main.c    22                    if ((kcode1==4)&&(kcode2==8))
+    00000030 D42E                   MOV.L       L359+10,R4 ; __$times$319
+    00000032 50F1                   MOV.L       @(4,R15),R0
+    00000034 8804                   CMP/EQ      #4,R0
+    00000036 8B05                   BF          L351
+    00000038 60F2                   MOV.L       @R15,R0
+    0000003A 8808                   CMP/EQ      #8,R0
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 29-Jul-2013 08:44:07  PAGE    2
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000003C 8B02                   BF          L351
+          main.c    23                            ++times;
+    0000003E 6242                   MOV.L       @R4,R2
+    00000040 7201                   ADD         #1,R2
+    00000042 2422                   MOV.L       R2,@R4
+    00000044              L351:                             
+          main.c    24                    if (times>=2)
+    00000044 6142                   MOV.L       @R4,R1
+    00000046 E302                   MOV         #2,R3
+    00000048 3133                   CMP/GE      R3,R1
+    0000004A 8B1C                   BF          L350
+          main.c    25                    {
+          main.c    26                            // draw a win
+          main.c    27                            PopUpWin(3);
+    0000004C D128                   MOV.L       L359+14,R1 ; _PopUpWin
+    0000004E 410B                   JSR         @R1
+    00000050 E403                   MOV         #3,R4
+          main.c    28                            locate(8,3);Print((unsigned char*)"Break!");
+    00000052 E503                   MOV         #3,R5
+    00000054 D327                   MOV.L       L359+18,R3 ; _locate
+    00000056 430B                   JSR         @R3
+    00000058 E408                   MOV         #8,R4
+    0000005A D427                   MOV.L       L359+22,R4 ; L326
+    0000005C D227                   MOV.L       L359+26,R2 ; _Print
+    0000005E 420B                   JSR         @R2
+    00000060 0009                   NOP
+          main.c    29                            locate(6,5);Print((unsigned char*)"Press [EXE]");
+    00000062 E505                   MOV         #5,R5
+    00000064 D323                   MOV.L       L359+18,R3 ; _locate
+    00000066 430B                   JSR         @R3
+    00000068 E406                   MOV         #6,R4
+    0000006A D425                   MOV.L       L359+30,R4 ; L327
+    0000006C D223                   MOV.L       L359+26,R2 ; _Print
+    0000006E 420B                   JSR         @R2
+    00000070 0009                   NOP
+    00000072 DD24                   MOV.L       L359+34,R13; _WaitKey
+    00000074 9E35                   MOV.W       L359,R14   ; H'7534
+          main.c    30                            while(WaitKey()!=KEY_CTRL_EXE);
+    00000076              L353:                             
+    00000076 4D0B                   JSR         @R13
+    00000078 0009                   NOP
+    0000007A 30E0                   CMP/EQ      R14,R0
+    0000007C 8BFB                   BF          L353
+          main.c    31                            //              
+          main.c    32                            merror_msg("error:EXIT Break");
+    0000007E D422                   MOV.L       L359+38,R4 ; L329
+    00000080 D322                   MOV.L       L359+42,R3 ; _merror_msg
+    00000082 430B                   JSR         @R3
+    00000084 0009                   NOP
+    00000086              L350:                             
+          main.c    33                    }
+          main.c    34            }
+          main.c    35    }
+    00000086 7F0C                   ADD         #12,R15
+    00000088 4F26                   LDS.L       @R15+,PR
+    0000008A 6DF6                   MOV.L       @R15+,R13
+    0000008C 000B                   RTS
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 29-Jul-2013 08:44:07  PAGE    3
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000008E 6EF6                   MOV.L       @R15+,R14
+          main.c    36    
+          main.c    37    int AddIn_main(int isAppli, unsigned short OptionNum)
+    00000090              _AddIn_main:                     ; function: AddIn_main
+                                                           ; frame size=4
+    00000090 4F22                   STS.L       PR,@-R15
+          main.c    38    {
+          main.c    39            int r;
+          main.c    40            SOURCE_FILE * sf;
+          main.c    41            Bdisp_AllClr_DDVRAM();
+    00000092 D31F                   MOV.L       L359+46,R3 ; _Bdisp_AllClr_DDVRAM
+    00000094 430B                   JSR         @R3
+    00000096 0009                   NOP
+          main.c    42    
+          main.c    43            if(setjmp(exit_buf)!=0)
+    00000098 D41E                   MOV.L       L359+50,R4 ; _exit_buf
+    0000009A D21F                   MOV.L       L359+54,R2 ; _setjmp
+    0000009C 420B                   JSR         @R2
+    0000009E 0009                   NOP
+    000000A0 2008                   TST         R0,R0
+    000000A2 8908                   BT          L355
+          main.c    44            {
+          main.c    45                    KillTimer(TIMER_ID);
+    000000A4 D21D                   MOV.L       L359+58,R2 ; _KillTimer
+    000000A6 420B                   JSR         @R2
+    000000A8 E402                   MOV         #2,R4
+          main.c    46                    WaitKey();
+    000000AA D316                   MOV.L       L359+34,R3 ; _WaitKey
+    000000AC 430B                   JSR         @R3
+    000000AE 0009                   NOP
+          main.c    47                    return 1;
+    000000B0 4F26                   LDS.L       @R15+,PR
+    000000B2 000B                   RTS
+    000000B4 E001                   MOV         #1,R0
+    000000B6              L355:                             
+          main.c    48            }
+          main.c    49    
+          main.c    50            SetTimer(TIMER_ID,1000,timer_exit_break);
+    000000B6 D61A                   MOV.L       L359+62,R6 ; _timer_exit_break
+    000000B8 9514                   MOV.W       L359+2,R5  ; H'03E8
+    000000BA D21A                   MOV.L       L359+66,R2 ; _SetTimer
+    000000BC 420B                   JSR         @R2
+    000000BE E402                   MOV         #2,R4
+          main.c    51    
+          main.c    52            sf = l_open_file("\\\\crd0\\3.txt");
+    000000C0 D419                   MOV.L       L359+70,R4 ; L337
+    000000C2 D31A                   MOV.L       L359+74,R3 ; _l_open_file
+    000000C4 430B                   JSR         @R3
+    000000C6 0009                   NOP
+    000000C8 6403                   MOV         R0,R4
+          main.c    53            if (sf==0) return 0;
+    000000CA 2448                   TST         R4,R4
+    000000CC 8905                   BT          L343
+          main.c    54            /*while(1)
+          main.c    55            {
+          main.c    56                    r=l_get_line(sf);
+          main.c    57                    puts(line);WaitKey();if (!r)return 0;
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 29-Jul-2013 08:44:07  PAGE    4
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          main.c    58            }*/
+          main.c    59            i_execute(sf);
+    000000CE D218                   MOV.L       L359+78,R2 ; _i_execute
+    000000D0 420B                   JSR         @R2
+    000000D2 0009                   NOP
+          main.c    60            WaitKey();
+    000000D4 D30B                   MOV.L       L359+34,R3 ; _WaitKey
+    000000D6 430B                   JSR         @R3
+    000000D8 0009                   NOP
+    000000DA              L343:
+          main.c    61            return 0;
+    000000DA E000                   MOV         #0,R0
+          main.c    62    }
+    000000DC              L356:                             
+    000000DC 4F26                   LDS.L       @R15+,PR
+    000000DE 000B                   RTS
+    000000E0 0009                   NOP
+    000000E2              L359:                             
+    000000E2 7534                   .DATA.W     H'7534
+    000000E4 03E8                   .DATA.W     H'03E8
+    000000E6 0000                   .DATA.W     0
+    000000E8 <00000000>             .DATA.L     _Bkey_GetKeyWait
+    000000EC <00000000>             .DATA.L     __$times$319
+    000000F0 <00000000>             .DATA.L     _PopUpWin
+    000000F4 <00000000>             .DATA.L     _locate
+    000000F8 <00000000>             .DATA.L     L326
+    000000FC <00000000>             .DATA.L     _Print
+    00000100 <00000000>             .DATA.L     L327
+    00000104 <00000000>             .DATA.L     _WaitKey
+    00000108 <00000000>             .DATA.L     L329
+    0000010C <00000000>             .DATA.L     _merror_msg
+    00000110 <00000000>             .DATA.L     _Bdisp_AllClr_DDVRAM
+    00000114 <00000000>             .DATA.L     _exit_buf
+    00000118 <00000000>             .DATA.L     _setjmp
+    0000011C <00000000>             .DATA.L     _KillTimer
+    00000120 <00000000>             .DATA.L     _timer_exit_break
+    00000124 <00000000>             .DATA.L     _SetTimer
+    00000128 <00000000>             .DATA.L     L337
+    0000012C <00000000>             .DATA.L     _l_open_file
+    00000130 <00000000>             .DATA.L     _i_execute
+          main.c    63    
+          main.c    64    
+          main.c    65    #pragma section _BR_Size
+          main.c    66    unsigned long BR_Size;
+          main.c    67    #pragma section
+          main.c    68    
+          main.c    69    #pragma section _TOP
+          main.c    70    int InitializeSystem(int isAppli, unsigned short OptionNum)
+P_T 00000000              _InitializeSystem:               ; function: InitializeSystem
+                                                           ; frame size=0
+          main.c    71    {
+          main.c    72        return INIT_ADDIN_APPLICATION(isAppli, OptionNum);
+    00000000 D301                   MOV.L       L360+2,R3  ; _INIT_ADDIN_APPLICATION
+    00000002 432B                   JMP         @R3
+    00000004 0009                   NOP
+    00000006              L360:                             
+    00000006 0000                   .DATA.W     0
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 29-Jul-2013 08:44:07  PAGE    5
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000008 <00000000>             .DATA.L     _INIT_ADDIN_APPLICATION
+          main.c    73    }
+          main.c    74    #pragma section
+          main.c    75    
+D   00000000              __$times$319:                    ; static: times
+    00000000 00000000               .DATA.L     H'00000000
+C   00000000              L326:
+    00000000 427265616B             .SDATA      "Break!"
+             21           
+    00000006 00                     .DATA.B     H'00
+    00000007 00000001               .RES.B      1
+    00000008              L327:
+    00000008 5072657373             .SDATA      "Press [EXE]"
+             205B455845   
+             5D           
+    00000013 00                     .DATA.B     H'00
+    00000014              L329:
+    00000014 6572726F72             .SDATA      "error:EXIT Break"
+             3A45584954   
+             2042726561   
+             6B           
+    00000024 00                     .DATA.B     H'00
+    00000025 00000001               .RES.B      1
+    00000026 00000002               .RES.W      1
+    00000028              L337:
+    00000028 5C5C637264             .SDATA      "\\crd0\3.txt"
+             305C332E74   
+             7874         
+    00000034 00                     .DATA.B     H'00
+B_B 00000000              _BR_Size:                        ; static: BR_Size
+    00000000 00000004               .RES.L      1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 29-Jul-2013 08:44:07  PAGE    1
+
+
+******** STATISTICS INFORMATION ********
+
+
+********** ERROR INFORMATION ***********
+
+NUMBER OF ERRORS:           0
+NUMBER OF WARNINGS:         1
+
+
+
+
+******* SOURCE LINE INFORMATION ********
+
+COMPILED SOURCE LINE:       75
+
+
+
+******* SECTION SIZE INFORMATION *******
+
+PROGRAM  SECTION (P):                               00000134 Byte(s)
+PROGRAM  SECTION (P_BR_Size):                       00000000 Byte(s)
+PROGRAM  SECTION (P_TOP):                           0000000C Byte(s)
+CONSTANT SECTION (C):                               00000035 Byte(s)
+CONSTANT SECTION (C_BR_Size):                       00000000 Byte(s)
+CONSTANT SECTION (C_TOP):                           00000000 Byte(s)
+DATA     SECTION (D):                               00000004 Byte(s)
+DATA     SECTION (D_BR_Size):                       00000000 Byte(s)
+DATA     SECTION (D_TOP):                           00000000 Byte(s)
+BSS      SECTION (B):                               00000000 Byte(s)
+BSS      SECTION (B_BR_Size):                       00000004 Byte(s)
+BSS      SECTION (B_TOP):                           00000000 Byte(s)
+
+ TOTAL PROGRAM SIZE: 0000017D Byte(s)
+
+
+
+********** LABEL INFORMATION ***********
+
+NUMBER OF EXTERNAL REFERENCE SYMBOLS:           14
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:           4
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:            30
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*** COMMAND PARAMETER ***
+
+
+  -subcommand=C:\Users\ADMINI~1\AppData\Local\Temp\hmk316D.tmp 
+
